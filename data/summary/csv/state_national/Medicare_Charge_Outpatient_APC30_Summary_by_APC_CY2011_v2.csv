@@ -1,0 +1,31 @@
+APC,Outpatient Services,Average Estimated Submitted Charges,Average Total Payments
+0012 - Level I Debridement & Destruction,274450,73.467407,16.11311321
+0013 - Level II Debridement & Destruction,432111,192.4848411,56.15946125
+0015 - Level III Debridement & Destruction,507334,322.7859483,97.1439922
+0019 - Level I Excision/ Biopsy,21543,1226.380205,328.251744
+0020 - Level II Excision/ Biopsy,33365,2768.179117,566.1631473
+0073 - Level III Endoscopy Upper Airway,8615,875.634029,297.9287081
+0074 - Level IV Endoscopy Upper Airway,11231,6255.167684,1462.242723
+0078 - Level III Pulmonary Treatment,226182,542.8323709,97.86295899
+0096 - Level II Noninvasive Physiologic Studies,216194,757.2155521,104.7359386
+0203 - Level IV Nerve Injections,4852,3402.496911,848.7481884
+0204 - Level I Nerve Injections,274121,704.8709978,177.5788031
+0206 - Level II Nerve Injections,38882,1079.998291,255.9570727
+0207 - Level III Nerve Injections,508645,2272.341445,496.3820514
+"0209 - Level II Extended EEG, Sleep, and Cardiovascular Studies",337592,3663.576835,757.5276371
+0265 - Level I Diagnostic and Screening Ultrasound,527161,492.3447083,62.33940576
+0267 - Level III Diagnostic and Screening Ultrasound,1240254,1064.108693,151.8249912
+0269 - Level II Echocardiogram Without Contrast,1352087,1932.848669,398.4130343
+0270 - Level III Echocardiogram Without Contrast,68224,2783.79808,560.1582043
+0336 - Magnetic Resonance Imaging and Magnetic Resonance Angiography without Contrast,1145082,2587.593051,346.2539037
+0368 - Level II Pulmonary Tests,638778,313.8848456,59.56408076
+0369 - Level III Pulmonary Tests,9258,965.2416904,210.8252398
+0377 - Level II Cardiac Imaging,665845,4381.635982,744.5815932
+0604 - Level 1 Hospital Clinic Visits,4177405,107.8446656,53.05515273
+0605 - Level 2 Hospital Clinic Visits,8128255,148.076255,76.18906264
+0606 - Level 3 Hospital Clinic Visits,3071047,187.2599314,102.2757419
+0607 - Level 4 Hospital Clinic Visits,710880,268.9508897,132.7375539
+0608 - Level 5 Hospital Clinic Visits,73568,362.6024364,179.649841
+0690 - Level I Electronic Analysis of Devices,604623,174.9021647,35.54461709
+0692 - Level II Electronic Analysis of Devices,32091,617.9563812,109.7129974
+0698 - Level II Eye Tests & Treatments,162235,201.9663093,69.02193361

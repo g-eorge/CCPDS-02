@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<table_data_name name="PNT_RCD_11_0_7_14_16">
+    <rows>
+        <field name="id">910997967</field>
+        <field name="age">75-84</field>
+        <field name="gndr">F</field>
+        <field name="inc">32000-47999</field>
+    </rows>
+    <rows>
+        <field name="id">506013497</field>
+        <field name="age">75-84</field>
+        <field name="gndr">M</field>
+        <field name="inc">16000-23999</field>
+    </rows>
+    <rows>
+        <field name="id">432041392</field>
+        <field name="age">85+</field>
+        <field name="gndr">M</field>
+        <field name="inc">&lt;16000</field>
+    </rows>
+    <rows>
+        <field name="id">633048699</field>
+        <field name="age">65-74</field>
+        <field name="gndr">F</field>
+        <field name="inc">32000-47999</field>
+    </rows>
+    <rows>
+        <field name="id">554425673</field>
+        <field name="age">&lt;65</field>
+        <field name="gndr">M</field>
+        <field name="inc">&lt;16000</field>
+    </rows>
+    <rows>
+        <field name="id">067203423</field>
+        <field name="age">&lt;65</field>
+        <field name="gndr">F</field>
+        <field name="inc">16000-23999</field>
+    </rows>
+    <rows>
+        <field name="id">765364565</field>
+        <field name="age">75-84</field>
+        <field name="gndr">M</field>
+        <field name="inc">&lt;16000</field>
+    </rows>
+    <rows>
+        <field name="id">916819946</field>
+        <field name="age">&lt;65</field>
+        <field name="gndr">M</field>
+        <field name="inc">16000-23999</field>
+    </rows>
+    <rows>
+        <field name="id">509688392</field>
+        <field name="age">65-74</field>
+        <field name="gndr">M</field>
+        <field name="inc">&lt;16000</field>
+    </rows>
+    <rows>
+        <field name="id">476566608</field>
+        <field name="age">75-84</field>
+        <field name="gndr">F</field>
+        <field name="inc">24000-31999</field>
+    </rows>
+    <rows>
+        <field name="id">205183018</field>
+        <field name="age">&lt;65</field>
+        <field name="gndr">F</field>
+        <field name="inc">16000-23999</field>
+    </rows>
+    <rows>
+        <field name="id">228707899</field>
+        <field name="age">&lt;65</field>
+        <field name="gndr">M</field>
+        <field name="inc">32000-47999</field>
+    </rows>
+    <rows>
+        <field name="id">077677677</field>
+        <field name="age">85+</field>
+        <field name="gndr">M</field>
+        <field name="inc">24000-31999</field>
+    </rows>
+    <rows>
+        <field name="id">107608887</field>
+        <field name="age">65-74</field>
+        <field name="gndr">M</field>
+        <field name="inc">16000-23999</field>
+    </rows>
+    <rows>
+        <field name="id">327153625</field>
+        <field name="age">65-74</field>
+        <field name="gndr">M</field>
+        <field name="inc">16000-23999</field>
+    </rows>
+    <rows>
+        <field name="id">453401897</field>
+        <field name="age">65-74</field>
+        <field name="gndr">M</field>
+        <field name="inc">48000+</field>
+    </rows>
+    <rows>
+        <field name="id">537673169</field>
+        <field name="age">85+</field>
+        <field name="gndr">F</field>
+        <field name="inc">16000-23999</field>
+    </rows>
+    <rows>
+        <field name="id">455729255</field>
+        <field name="age">75-84</field>
+        <field name="gndr">M</field>
+        <field name="inc">32000-47999</field>
+    </rows>
+    <rows>
+        <field name="id">290805792</field>
+        <field name="age">65-74</field>
+        <field name="gndr">M</field>
+        <field name="inc">&lt;16000</field>
+    </rows>
+    <rows>
+        <field name="id">308158177</field>
+        <field name="age">85+</field>
+        <field name="gndr">F</field>
+        <field name="inc">48000+</field>
+    </rows>
+    <rows>
+        <field name="id">344851495</field>
+        <field name="age">65-74</field>
+        <field name="gndr">F</field>
+        <field name="inc">&lt;16000</field>
+    </rows>
+</table_data_name>
