@@ -1,0 +1,9 @@
+DROP TABLE patients;
+CREATE EXTERNAL TABLE patients (
+  patient_id STRING,
+  age STRING,
+  gndr STRING,
+  inc STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+LOCATION '/tmp/patients';
