@@ -11,7 +11,7 @@ export SRC=$(cd $CURRENT_DIR/../ && pwd)
 export DATA=$(cd $CURRENT_DIR/../../data && pwd)
 
 # Stream jar location
-export STREAMJAR="/usr/lib/hadoop-mapreduce/hadoop-streaming.jar"
+export STREAMJAR="/usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.4.0.jar"
 
 # Tell Hive where to find our serdes
 #export SERDES=$CURRENT_DIR/../lib/json-serde.jar
