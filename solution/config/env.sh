@@ -6,9 +6,17 @@
 CURRENT_DIR=$(dirname $0)
 CURRENT_DIR=$( cd $CURRENT_DIR && pwd )
 
-export BASE=$(cd $CURRENT_DIR/../../ && pwd)
-export SRC=$(cd $CURRENT_DIR/../ && pwd)
-export DATA=$(cd $CURRENT_DIR/../../data && pwd)
+# Linux
+SED="sed -rn"
+
+# OS X
+if [ $(uname) == "Darwin" ]; then
+  SED="sed -En"
+fi
+
+export BASE=$(cd $CURRENT_DIR && pwd | $SED -e 's/\/solution.*$//p')
+export SRC="$BASE/solution"
+export DATA="$BASE/data"
 
 # Stream jar location
 export STREAMJAR="/usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.4.0.jar"

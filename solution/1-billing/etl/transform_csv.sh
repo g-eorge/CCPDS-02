@@ -6,15 +6,7 @@
 CURRENT_DIR=$(dirname $0)
 CURRENT_DIR=$( cd $CURRENT_DIR && pwd )
 
-source $CURRENT_DIR/../config/env.sh
-
-# Linux
-SED="sed -rn"
-
-# OS X
-if [ $(uname) == "Darwin" ]; then
-  SED="sed -En"
-fi
+source $CURRENT_DIR/../../config/env.sh
 
 declare -a input=( "Medicare_Provider_Charge_Outpatient_APC30_CY2011_v2.csv" "Medicare_Provider_Charge_Inpatient_DRG100_FY2011.csv" )
 
