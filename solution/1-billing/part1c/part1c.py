@@ -36,6 +36,7 @@ for key, val in regions.items():
 
 # sys.stdout.write(str(len(max_charges)))
 
+# Count how many times a region charged the most for a procedure
 for k, v in max_charges.items():
   # sys.stdout.write("%s\t%s\t%s\n" % (k, v['region'], v['max_charge']))
   if v['region'] not in counts:
@@ -43,6 +44,7 @@ for k, v in max_charges.items():
   else:
     counts[v['region']] = counts[v['region']] + 1
 
+# Sort and output to CSV
 for k, v in sorted(counts.items(), key=lambda t: t[1], reverse=True)[0:3]:
   # sys.stdout.write("%s\t%s\n" % (k, v))
   (state, city) = k.split('-', 1)
