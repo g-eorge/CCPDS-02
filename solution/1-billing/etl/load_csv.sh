@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Load the CSV in to Hive / Impala
+# Load the TSV in to Hive / Impala
 
 CURRENT_DIR=$(dirname $0)
 CURRENT_DIR=$( cd $CURRENT_DIR && pwd )

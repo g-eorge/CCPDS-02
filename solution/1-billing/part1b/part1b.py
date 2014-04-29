@@ -1,6 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Which three providers claimed the highest amount (on average) for the largest number of procedures?
+#
+# To clarify, consider this example. If out of four providers, Provider A had the highest average claim amounts 
+# for procedures 1, 2, and 3, Provider B had the highest average claim amount for procedure 4, and Provider C and 
+# Provider D did not have the highest average claim amount for any procedure, then Provider A claimed the highest 
+# amount for the largest number of procedures (3 versus 1, 0, and 0).
+
 import sys
 
 nlines = 0

@@ -27,6 +27,7 @@ $SED -e '1s/[()]//g' \
 	-e 's/^(DRG|APC),"([0-9]+) \- (.+)",(.*)$/\1,\2,"\3",\4/p' \
 	$LOCALTMP/provider_charge.tmp > $LOCALTMP/provider_charge.csv
 
+# Convert CSV to TSV
 $SED -e 's/^(.+),(.+),"(.+)",(.+),(.+),(.+),(.+),(.+)$/\1	\2	\3	\4	\5	\6	\7	\8/p' \
 		 -e 's/^(.+),(.+),(.+),(.+),(.+),(.+),(.+),(.+)$/\1	\2	\3	\4	\5	\6	\7	\8/p' \
 		 $LOCALTMP/provider_charge.csv > $LOCALTMP/provider_charge.tsv

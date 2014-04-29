@@ -1,0 +1,8 @@
+Type	IPC9	Procedure	Provider_Id	HRR	Outpatient_Services	Average_Estimated_Submitted_Charges	Average_Total_Payments
+APC	1		A	CA - San Jose	23	100	1
+APC	2		A	CA - San Jose	23	100	1
+APC	1		B	CA - San Jose	23	10	1
+APC	2		C	CA - San Jose	23	10	1
+APC	3		A	CA - San Jose	23	20	1
+APC	3		B	CA - San Jose	23	100	1
+APC	3		C	CA - San Jose	23	20	1

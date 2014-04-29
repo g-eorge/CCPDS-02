@@ -1,6 +1,7 @@
 #! /usr/bin/env julia
 
-# Tool for finding the variance
+# Which three procedures have the highest relative variance in cost?
+
 # Depends: Julia 0.2.1
 
 # Install if necessary

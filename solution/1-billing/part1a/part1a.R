@@ -1,6 +1,6 @@
 #! /usr/bin/env Rscript
 
-# Tool for finding the variance
+# Which three procedures have the highest relative variance in cost?
 
 # Dependencies
 # install.packages("psych")

@@ -1,6 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# The providers in which three regions claimed the highest average amount for the largest number of procedures? 
+# The region can be found in the Hospital Referral Region Description column in the summary data files.
+#
+# To clarify, consider this example. If out of three regions, providers in San Jose, CA had the highest average claim 
+# amount for procedure 1 (averaged across all providers in San Jose), providers in Boston, MA had the highest average 
+# claim amounts for procedures 2 and 3 (averaged across all providers in Boston), and providers in New York, NY had the 
+# highest average claim amount for procedure 4 (averaged across all providers in New York), then the providers in Boston, 
+# MA claimed the highest average claim amount for the largest number of procedures (2 versus 1 and 1).
+
 import sys
 
 regions = {}

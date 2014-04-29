@@ -5,4 +5,4 @@ CURRENT_DIR=$( cd $CURRENT_DIR && pwd )
 
 source $CURRENT_DIR/../../config/env.sh
 
-tail -n+2 $CURRENT_DIR/test_input.tsv | $CURRENT_DIR/part1b.py
+tail -n+2 $LOCALTMP/provider_charge.tsv | $CURRENT_DIR/part1d.py > $CURRENT_DIR/part1d.csv
