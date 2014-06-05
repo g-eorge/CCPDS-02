@@ -18,30 +18,30 @@ counts = {}
 
 # Find the average charge for each procedure by region
 for line in sys.stdin:
-  (proc_type, ipc9, procedure, provider_id, region, service_count, charges, payments) = line.split("\t")
+  (proc_type, icd9, procedure, provider_id, provider_city, provider_state, region, service_count, charges, payments) = line.split("\t")
   charges = float(charges)
 
   # code-state-city
-  key = "%s-%s" % (ipc9, region)
+  key = "%s-%s" % (icd9, region)
 
   if key not in regions:
     regions[key] = { 'avg_charge': 0, 'provider_count': 0 }
 
   # Update cumulative moving average
-  regions[key]['avg_charge'] = charges + (regions[key]['provider_count'] * regions[key]['avg_charge']) / (regions[key]['provider_count'] + 1)
+  regions[key]['avg_charge'] = (charges + (regions[key]['provider_count'] * regions[key]['avg_charge'])) / (regions[key]['provider_count'] + 1)
   regions[key]['provider_count'] = regions[key]['provider_count'] + 1
 
 
 # Find the regions that charged the most for the procedures
 for key, val in regions.items():
   # sys.stdout.write(key + "\n")
-  (ipc9, region) = key.split("-", 1)
-  if ipc9 not in max_charges:
-    max_charges[ipc9] = { 'max_charge': 0 }
+  (icd9, region) = key.split("-", 1)
+  if icd9 not in max_charges:
+    max_charges[icd9] = { 'max_charge': 0 }
 
-  if regions[key]['avg_charge'] > max_charges[ipc9]['max_charge']:
-    max_charges[ipc9]['max_charge'] = regions[key]['avg_charge']
-    max_charges[ipc9]['region'] = region
+  if regions[key]['avg_charge'] > max_charges[icd9]['max_charge']:
+    max_charges[icd9]['max_charge'] = regions[key]['avg_charge']
+    max_charges[icd9]['region'] = region
 
 # sys.stdout.write(str(len(max_charges)))
 

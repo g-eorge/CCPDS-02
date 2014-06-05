@@ -4,6 +4,8 @@ CREATE EXTERNAL TABLE provider_charge (
   ipc9 STRING,
   procedure_code STRING,
   provider_id STRING,
+  provider_city STRING,
+  provider_state STRING,
   hrr STRING,
   num_procedures INT,
   charges FLOAT,

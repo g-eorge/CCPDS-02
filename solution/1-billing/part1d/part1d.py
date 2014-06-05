@@ -16,16 +16,16 @@ counts = {}
 
 # Find the provider that had the largest claim difference for each procedure
 for line in sys.stdin:
-  (proc_type, ipc9, procedure, provider_id, region, service_count, charges, payments) = line.split("\t")
+  (proc_type, icd9, procedure, provider_id, provider_city, provider_state, region, service_count, charges, payments) = line.split("\t")
   charges = float(charges)
   payments = float(payments)
 
-  if ipc9 not in procedures:
-    procedures[ipc9] = { 'max_diff': 0 }
+  if icd9 not in procedures:
+    procedures[icd9] = { 'max_diff': 0 }
 
-  if charges - payments > procedures[ipc9]['max_diff']:
-    procedures[ipc9]['max_diff'] = charges - payments
-    procedures[ipc9]['provider_id'] = provider_id
+  if charges - payments > procedures[icd9]['max_diff']:
+    procedures[icd9]['max_diff'] = charges - payments
+    procedures[icd9]['provider_id'] = provider_id
 
 # Count by provider
 for k, v in map(lambda x: (x[1]['provider_id'], 1), procedures.items()):

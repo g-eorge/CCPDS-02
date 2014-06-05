@@ -18,16 +18,16 @@ counts = {}
 # Find the provider that charged the most for each procedure
 for line in sys.stdin:
 
-  (proc_type, ipc9, procedure, provider_id, hrr, service_count, charges, payments) = line.split("\t")
+  (proc_type, icd9, procedure, provider_id, provider_city, provider_state, hrr, service_count, charges, payments) = line.split("\t")
 
-  if ipc9 not in procedures:
-    procedures[ipc9] = { 'max_charge': 0 }
+  if icd9 not in procedures:
+    procedures[icd9] = { 'max_charge': 0 }
 
   charges = float(charges)
 
-  if charges > procedures[ipc9]['max_charge']:
-    procedures[ipc9]['max_charge'] = charges
-    procedures[ipc9]['provider_id'] = provider_id
+  if charges > procedures[icd9]['max_charge']:
+    procedures[icd9]['max_charge'] = charges
+    procedures[icd9]['provider_id'] = provider_id
 
   nlines = nlines + 1
 

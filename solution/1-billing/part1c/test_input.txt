@@ -1,0 +1,11 @@
+Type	IPC9	Procedure	Provider_Id	Provider_City	Provider_State	HRR	Outpatient_Services	Average_Estimated_Submitted_Charges	Average_Total_Payments
+APC	1		1			CA - San Jose	23	78.08695652	21.91043478
+APC	1		2			CA - San Jose	994	149.5897485	36.62385312
+APC	1		3			MA - Boston	23	13	21.91043478
+APC	1		4			MA - Boston	994	6	36.62385312
+APC	2		3			MA - Boston	23	78.08695652	21.91043478
+APC	3		4			MA - Boston	994	149.5897485	36.62385312
+APC	2		3			CA - San Jose	23	9	21.91043478
+APC	3		4			CA - Los Angeles	994	16	36.62385312
+APC	4		5			NY - New York	994	9	36.62385312
+APC	4		6			NY - New York	994	16	36.62385312
