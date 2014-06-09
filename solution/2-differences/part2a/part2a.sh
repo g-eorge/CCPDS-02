@@ -21,3 +21,8 @@ fi
 numcols=$(count_cols $data)
 
 $CURRENT_DIR/../similarity.scala $numcols < $data > $CURRENT_DIR/part2a.csv
+
+echo
+echo "Plotting summaries..."
+mkdir -p $CURRENT_DIR/exploring/plots
+$CURRENT_DIR/visualise.R > /dev/null 2>&1

@@ -4,7 +4,7 @@
 # Some providers and regions are likely to be different in more subtle ways. Based on the data provided,
 # which three providers are least like the others? Briefly explain what seems to be different about these providers.
 #
-# This tool transforms the provider data into dense row vectors of features for each provider.
+# This tool transforms the procedure data into dense row vectors of features for each provider.
 #
 # For each provider row vector it outputs the columns:
 #   provider id

@@ -2,6 +2,20 @@
 # -*- coding: utf-8 -*-
 
 # Which three regions are least like the others? Briefly explain what seems to be different about these regions.
+#
+# This tool transforms the procedure data into dense row vectors of features for each region.
+#
+# For each region row vector it outputs the columns:
+#   region id
+#   provider count        - the number of providers in the region
+#   apc count             - the number of apc type procedures providers in the region carried out
+#   drg count             - the number of drg type procedures providers in the region carried out
+#   For each procedure:
+#     count               - the number of providers in the region providing this procedure
+#     service count       - the total number of services provided for this procedure in the region
+#     charges             - the average charges for this procedure in the region or NA
+#     payments            - the average payments for this procedure in the region or NA
+#
 
 import sys
 
@@ -15,7 +29,7 @@ def proc_dict(icd9, count, service_count, avg_charge, avg_payment):
 def sparse_to_dense_procs(sparse_procs):
   dense_procs = dict()
   for proc in uniq_procs:
-    dense_procs[proc] = proc_dict(proc, 0, 0, 0, 0)
+    dense_procs[proc] = proc_dict(proc, 0, 0, "NA", "NA")
     if proc in sparse_procs:
       dense_procs[proc] = sparse_procs[proc]
   # Sort on the code so that every vector is always in the same order

@@ -20,4 +20,9 @@ fi
 
 numcols=$(count_cols $data)
 
-$CURRENT_DIR/../similarity.scala $numcols scale < $data | $SED -e 's/(.+) - (.+)/\2,\1/p' > $CURRENT_DIR/part2b.csv
+$CURRENT_DIR/../similarity.scala $numcols < $data | $SED -e 's/(.+) - (.+)/\2,\1/p' > $CURRENT_DIR/part2b.csv
+
+echo
+echo "Plotting summaries..."
+mkdir -p $CURRENT_DIR/exploring/plots
+$CURRENT_DIR/visualise.R > /dev/null 2>&1
