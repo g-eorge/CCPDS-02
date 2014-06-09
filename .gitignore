@@ -7,3 +7,4 @@
 *.Rproj
 Rplots.pdf
 .idea
+.RData
