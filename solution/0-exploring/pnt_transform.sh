@@ -23,7 +23,7 @@ hadoop jar $SRC/tools/ccp-medicare/target/scala-2.10/ccp-medicare-assembly-1.0.0
   $TMP/patients
 
 # Create claims Hive table  
-hive -f $CURRENT_DIR/create_patients.hql
+hive -d loc=$TMP/patients -f $CURRENT_DIR/create_patients.hql
 
 #echo "Cleaning up..."
 #rm -rf $tmp

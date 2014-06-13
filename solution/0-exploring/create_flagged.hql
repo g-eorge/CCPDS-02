@@ -4,4 +4,4 @@ CREATE EXTERNAL TABLE flagged (
   label int
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
-LOCATION '/tmp/flagged';
+LOCATION '${loc}';

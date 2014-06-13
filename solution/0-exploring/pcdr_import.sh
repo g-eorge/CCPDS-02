@@ -33,7 +33,7 @@ for file in $tmp/*.ADT; do
 done
 
 # Create claims Hive table
-hive -f $CURRENT_DIR/create_claims.hql
+hive -d loc=$TMP/claims -f $CURRENT_DIR/create_claims.hql
 
 #echo "Cleaning up..."
 #rm -rf $tmp

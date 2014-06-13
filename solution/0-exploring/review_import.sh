@@ -28,4 +28,4 @@ hadoop fs -mkdir -p $TMP/flagged
 $SED -e 's/^(.+)$/\1	1/p' $tmp/REVIEW.txt | hadoop fs -put - $TMP/flagged/flagged.txt
 
 # Create flagged Hive table
-hive -f $CURRENT_DIR/create_flagged.hql
+hive -d loc=$TMP/flagged -f $CURRENT_DIR/create_flagged.hql

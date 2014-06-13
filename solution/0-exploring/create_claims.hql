@@ -5,4 +5,4 @@ CREATE EXTERNAL TABLE claims (
   procedure_code STRING
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
-LOCATION '/tmp/claims';
+LOCATION '${loc}';
