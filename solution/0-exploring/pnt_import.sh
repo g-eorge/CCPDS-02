@@ -25,11 +25,3 @@ fi
 hadoop fs -mkdir -p $TMP/pntxml
 
 hadoop fs -put $tmp/*.XML $TMP/pntxml
-
-# TODO: Make a streaming job to transform the XML
-
-# TODO: Create claims Hive table
-# hive -f $CURRENT_DIR/create_patients.hql
-
-#echo "Cleaning up..."
-#rm -rf $tmp
