@@ -16,7 +16,7 @@ if hadoop fs -test -e $TMP/patients; then
   hadoop fs -rm -r -skipTrash $TMP/patients
 fi
 
-hadoop jar $SRC/tools/ccp-medicare/target/scala-2.10/ccp-medicare-assembly-1.0.0-SNAPSHOT.jar ccp.medicare.XmlTransform \
+hadoop jar $SRC/tools/medicare/target/scala-2.10/medicare-assembly-1.0.0-SNAPSHOT.jar medicare.etl.XmlTransform \
   -Dmapred.output.compress=true \
   -Dmapred.output.compression.codec=org.apache.hadoop.io.compress.SnappyCodec \
   $input  \

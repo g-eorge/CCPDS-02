@@ -2,7 +2,7 @@ import AssemblyKeys._
 
 assemblySettings
 
-name := "ccp-medicare"
+name := "medicare"
 
 version := "1.0.0-SNAPSHOT"
 
@@ -11,14 +11,14 @@ scalaVersion := "2.10.4"
 libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.10" % "2.1.3" % "test",
   "ch.qos.logback" % "logback-classic" % "1.1.2",
-  "org.apache.hadoop" % "hadoop-client" % "2.0.0-cdh4.4.0" % "provided",
-  "org.slf4j" % "slf4j-api" % "1.7.5",
-  "org.slf4j" % "slf4j-jcl" % "1.7.5",
-  "com.google.guava" % "guava" % "16.0",
-  "org.apache.crunch" % "crunch-scrunch_2.10" % "0.8.2+48-cdh4.6.0"
-    exclude("javax.jms", "jms") 
-    exclude("com.sun.jdmk", "jmxtools") 
-    exclude("com.sun.jmx", "jmxri")
+  "org.apache.hadoop" % "hadoop-client" % "2.4.0" % "provided",
+  "org.apache.crunch" % "crunch-core" % "0.10.0-hadoop2",
+  "org.apache.crunch" % "crunch-scrunch" % "0.10.0-hadoop2"
+    exclude("javax.jms", "jms")
+    exclude("com.sun.jdmk", "jmxtools")
+    exclude("com.sun.jmx", "jmxri"),
+  "org.apache.thrift" % "libthrift" % "0.8.0" % "provided",
+  "org.apache.mahout" % "mahout-core" % "0.9" % "provided"
 )
 
 scalacOptions += "-feature"
@@ -30,6 +30,8 @@ scalacOptions in Test += "-language:reflectiveCalls"
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
 resolvers += "Cloudera" at "https://repository.cloudera.com/artifactory/cloudera-repos/"
+
+resolvers += "Maven Central" at "http://repo1.maven.org/maven2"
 
 mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
   {

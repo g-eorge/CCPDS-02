@@ -30,6 +30,9 @@ $SED -e '1s/[()]//g' \
 # Convert CSV to TSV
 cat $LOCALTMP/provider_charge.csv | $CURRENT_DIR/csv2tsv.py	> $LOCALTMP/provider_charge.txt
 
+# Make a copy with no header
+tail -n+2 $LOCALTMP/provider_charge.txt > $LOCALTMP/provider_charge_noheader.txt
+
 # Check the same number of lines are output as in the input
 wc -l $LOCALTMP/provider_charge.tmp
 wc -l $LOCALTMP/provider_charge.csv
