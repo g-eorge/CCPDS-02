@@ -1,9 +1,0 @@
-.DS_Store
-.idea
-.history
-project/target
-project/project/target
-target/resolution-cache
-target/streams
-target/scala-2.10/classes
-target/scala-2.10/test-classes
