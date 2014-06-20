@@ -15,7 +15,7 @@ def vector(row: Array[String]) = {
 
 // Load the data
 val project = "/Users/george/Src/CCP2014-01"
-val file = s"$project/data/claim_vector_sample.csv"
+val file = s"$project/data/sample/claim_vector_sample.csv"
 val examples = sc.textFile(file)
 
 // Parse the data

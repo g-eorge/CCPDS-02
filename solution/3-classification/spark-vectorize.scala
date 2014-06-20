@@ -3,7 +3,7 @@ import scala.collection.SortedSet
 
 // Load the data
 val project = "/Users/george/Src/CCP2014-01"
-val file = s"$project/data/patient_claims_sample.txt"
+val file = s"$project/data/sample/patient_claims_sample.txt"
 val data = sc.textFile(file)
 
 val ages = Map(List(("\\N" -> 0),
@@ -58,4 +58,4 @@ val claimVectors = data map { line =>
   key.split(":").mkString(sep) + sep + claims.sum + sep + claims.mkString(sep)
 }
 
-claimVectors.saveAsTextFile(s"$project/data/spark_claim_vector_sample")
+claimVectors.saveAsTextFile(s"$project/data/sample/spark_claim_vector_sample")
