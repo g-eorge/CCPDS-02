@@ -28,7 +28,7 @@ $SED -e '1s/[()]//g' \
 	$LOCALTMP/provider_charge.tmp > $LOCALTMP/provider_charge.csv
 
 # Convert CSV to TSV
-cat $LOCALTMP/provider_charge.csv | $CURRENT_DIR/csv2tsv.py	> $LOCALTMP/provider_charge.txt
+$CURRENT_DIR/csv2tsv.py < $LOCALTMP/provider_charge.csv > $LOCALTMP/provider_charge.txt
 
 # Make a copy with no header
 tail -n+2 $LOCALTMP/provider_charge.txt > $LOCALTMP/provider_charge_noheader.txt

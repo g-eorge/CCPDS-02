@@ -54,7 +54,7 @@ object Vectorizer extends Serializable {
     } groupByKey() map { case (key,vals) =>
       val sep = ","
       val claims = denseClaims(vals)
-      key.split(":").mkString(sep) + sep + claims.sum + sep + claims.mkString(sep)
+      key.split(":").mkString(sep) + sep + claims.mkString(sep)
     }
 
     claimVectors.saveAsTextFile(output) 

@@ -28,11 +28,11 @@ qplot(ICD9, Average_Total_Payments, data = subset(df, df$Type=="APC"), geom = "p
       ylab = "Average Total Payments") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size=6))
 ggsave(file = "plots/APC_Procedure_Cost.png", width = 12, height = 6, dpi = 300)
 
-# Compute the variance by ICD9 code
-variance <- ddply(df, 'ICD9', function(x) c(Count=nrow(x), Variance=var(x$Average_Total_Payments)))
+# Compute the coefficient of variance 'relative variance' by ICD9 code
+relVar <- ddply(df, 'ICD9', function(x) c(Count=nrow(x), Variance=sd(x$Average_Total_Payments) / mean(x$Average_Total_Payments)))
 
 # Get the top 3 codes
-sortedvariance <- arrange(variance, desc(Variance))
-top3 <- as.character(sortedvariance[1:3,1])
+sortedRelVariance <- arrange(relVar, desc(Variance))
+top3 <- as.character(sortedRelVariance[1:3,1])
 
 write(t(top3), file = "part1a.csv" )

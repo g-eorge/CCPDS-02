@@ -8,7 +8,8 @@ library(reshape2)
 library(grid)
 library(ggplot2)
 
-dataDir <- "../../data/sample"
+dataDir <- "../../data/sample/cluster"
+hdfs <- "/part-00000"
 
 # k runs we are interested in
 from <- 2
@@ -52,7 +53,7 @@ vplayout <- function(x, y)
 row_idx <- 0
 col_idx <- 0
 for (k in steps) {
-  file <- paste(dataDir, "/confusion-k", k, "-fold", fold, ".csv", sep="")
+  file <- paste(dataDir, "/confusion-k", k, ".csv", hdfs, sep="")
   df <- read.csv(file)
   p <- drawPlot(df,k)
   print(p, vp = vplayout(row_idx + 1, col_idx + 1))

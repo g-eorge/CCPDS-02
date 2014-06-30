@@ -7,7 +7,8 @@
 library(grid)
 library(ggplot2)
 
-dataDir <- "../../data/sample"
+dataDir <- "../../data/sample/cluster"
+hdfs <- "/part-00000"
 
 # k runs we are interested in
 from <- 2
@@ -60,7 +61,7 @@ ranking <- data.frame()
 
 # Read the review data for each run of k and plot it on the grid
 for (k in steps) {
-  file <- paste(dataDir, "/review-k", k, "-fold", fold, ".csv", sep="")
+  file <- paste(dataDir, "/review-k", k, ".csv", hdfs, sep="")
   df <- read.csv(file)
   if (nrow(df) > 0) {
     p <- drawPlot(df, k)

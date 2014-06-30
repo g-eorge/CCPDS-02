@@ -1,10 +1,9 @@
 // Scala script to be run in the Spark shell via :load /path/to/file.scala
 
 object Clusterer extends Serializable {
-  import org.apache.spark.mllib.regression.LabeledPoint
-  import org.apache.spark.mllib.clustering.KMeans
+  import org.apache.spark.storage.StorageLevel
+  import org.apache.spark.mllib.clustering.{KMeans, KMeansModel}
   import org.apache.spark.mllib.linalg.Vectors
-  import org.apache.spark.mllib.util.MLUtils._
   import org.apache.spark.Accumulator
   import org.apache.spark.rdd.RDD
   import scala.collection.mutable.{Map => MutableMap}
@@ -12,10 +11,11 @@ object Clusterer extends Serializable {
 
   // Convert a row to a vector removing the patient_id and label fields
   def vector(row: Array[String]) = {
-    val label = row(4).toDouble
-    // val fields = row.tail.slice(0,3) ++ row.tail.slice(4,row.length)
-    val fields = row.slice(5, row.length)
-    new LabeledPoint(label, Vectors.dense(fields.map(_.toDouble)))
+    val label = row(4).toInt
+    val patientId = row(0)
+    // val fields = row.tail.slice(0,3) ++ row.tail.slice(4,row.length) // Consider the patient details and the procedures claimed
+    val fields = row.slice(5, row.length) // Only consider the procedures claimed
+    (label, Vectors.dense(fields.map(_.toDouble)), patientId)
   }
 
   // Display the confusion matrix
@@ -48,46 +48,46 @@ object Clusterer extends Serializable {
   }
 
   // Dump the cluster scores to csv
-  def csvScores(file: String, scores: List[(Int,Double,Double)]) {
-    val pw = new PrintWriter(new File(file))
-    pw.write("k,wssse,purity\n")
-    scores.foreach { s => 
-      pw.write(s"${s.productIterator.toList.mkString(",")}\n")
+  def csvScores(scores: List[(Int,Double,Double)]) = {
+    val s = new StringBuilder()
+    s.append("k,wssse,purity\n")
+    scores.foreach { score => 
+      s.append(s"${score.productIterator.toList.mkString(",")}\n")
     }
-    pw.close
+    s.split('\n').toSeq
   }
 
   // Dump the clusters with the majority of labels to csv
-  def csvReviewClusters(file: String, clusters: Iterator[(Int,Int,Int,Int)]) {
-    val pw = new PrintWriter(new File(file))
-    pw.write("cid,label,count,total\n")
-    clusters.foreach { s => 
-      pw.write(s"${s.productIterator.toList.mkString(",")}\n")
+  def csvReviewClusters(clusters: Iterator[(Int,Int,Int,Int)]) = {
+    val s = new StringBuilder()
+    s.append("cid,label,count,total\n")
+    clusters.foreach { c => 
+      s.append(s"${c.productIterator.toList.mkString(",")}\n")
     }
-    pw.close
+    s.split('\n').toSeq
   }
 
   // Dump the confusion matrix to csv
-  def csvConfusion(file: String, k: Int, confusion: Map[String, Accumulator[Int]]) {
-    val pw = new PrintWriter(new File(file))
+  def csvConfusion(k: Int, confusion: Map[String, Accumulator[Int]]) = {
+    val s = new StringBuilder()
     val r = 0 until k
-    pw.write("label")
-    r.foreach { prediction => pw.write(s",c$prediction") }
-    pw.write("\n")
+    s.append("label")
+    r.foreach { prediction => s.append(s",c$prediction") }
+    s.append("\n")
     r.foreach { i =>
       var l = List[Int]()
       r.foreach { j =>
         l = confusion.get(s"$i:$j").map(a => a.value).getOrElse(0) +: l
       }
       if (l.exists(_ > 0)) {
-        pw.write(s"$i")
+        s.append(s"$i")
         l.reverse.foreach { x =>
-          pw.write("," + x)
+          s.append("," + x)
         }
-        pw.write("\n")
+        s.append("\n")
       }
     }
-    pw.close
+    s.split('\n').toSeq
   }
 
   // Get a list of actual labels for each predicted cluster
@@ -121,63 +121,124 @@ object Clusterer extends Serializable {
   def cluster(input: String, output: String) = {
     // Load the data
     val examples = sc.textFile(input)
-    val numFolds = 2
-    val seed = 7
-    val folds = kFold(examples, numFolds, seed)
 
-    0 until numFolds foreach { fold =>
+    // Cache the models so we can choose one later
+    val models = MutableMap[String,KMeansModel]()
 
-      val train = folds(fold)._1
-      val test = folds(fold)._2
+    // Parse the data
+    val vectors = examples.map(parse)
+    val labels = vectors.map(_._1).persist(StorageLevel.MEMORY_ONLY_SER)
+    val features = vectors.map(_._2).persist(StorageLevel.MEMORY_ONLY_SER)
 
-      // Parse the data
-      val trainLabels = train.map(parse).cache()
-      val trainPoints = trainLabels.map(_.features).cache()
-      val testLabels = test.map(parse).cache()
-      val testPoints = testLabels.map(_.features).cache()
+    // Cluster the data into two classes using KMeans
+    // val clusters = List(2,4,8,16,32,48,64,128,256)
+    // val clusters = List(8,16,32)
+    // val clusters = 2 to 202 by 10 toList
+    // val clusters = 2 to 50 by 2 toList
+    // val clusters = 2 to 20 by 1 toList
+    val clusters = (2 to 19) ++ (20 to 50 by 2) toList
+    val runs = 3
 
-      // Cluster the data into two classes using KMeans
-      // val clusters = List(2,4,8,16,32,48,64,128,256)
-      // val clusters = List(2)
-      // val clusters = 2 to 202 by 10 toList
-      // val clusters = 2 to 50 by 2 toList
-      // val clusters = 2 to 20 by 1 toList
-      val clusters = (2 to 19) ++ (20 to 50 by 2) toList
-      val runs = 3
+    val scores = clusters.map { numClusters =>
+      
+      println(s"k=$numClusters ...")
 
-      val scores = clusters.map { numClusters =>
-        
-        println(s"k=$numClusters, fold=$fold...")
+      val model = KMeans.train(features, numClusters, runs)
+      models.put(s"$numClusters", model)
 
-        val model = KMeans.train(trainPoints, numClusters, runs)
+      // Evaluate clustering by computing Within Set Sum of Squared Errors
+      val WSSSE = model.computeCost(features)
+      // println("Within Set Sum of Squared Errors = " + WSSSE)
+      
+      val predictions = model.predict(features).cache()
+      val labelVsPredicted = labels.zip(predictions).cache()
 
-        // Evaluate clustering by computing Within Set Sum of Squared Errors
-        val WSSSE = model.computeCost(testPoints)
-        // println("Within Set Sum of Squared Errors = " + WSSSE)
-        
-        val labels = testLabels.map(_.label.toInt)
-        val points = testLabels.map(_.features)
-        val predictions = model.predict(points)
-        val labelVsPredicted = labels.zip(predictions)
+      val c = confusion(model.k, labelVsPredicted)
+      // displayConfusion(model.k, c)
+      sc.makeRDD(csvConfusion(model.k, c), 1).saveAsTextFile(s"$output/confusion-k${model.k}.csv")
+      sc.makeRDD(csvReviewClusters(reviewClusters(1, labelVsPredicted).toLocalIterator), 1).saveAsTextFile(s"$output/review-k${model.k}.csv")
 
-        val c = confusion(model.k, labelVsPredicted)
-        // displayConfusion(model.k, c)
-        csvConfusion(s"$output/confusion-k${model.k}-fold$fold.csv", model.k, c)
-        csvReviewClusters(s"$output/review-k${model.k}-fold$fold.csv", reviewClusters(1, labelVsPredicted).toLocalIterator)
+      // Evaluate clustering by computing the purity
+      val pure = purity(model.k, labelVsPredicted)
 
-        // Evaluate clustering by computing the purity
-        val pure = purity(model.k, labelVsPredicted)
+      predictions.unpersist()
+      labelVsPredicted.unpersist()
 
-        // The score for k clusters
-        (model.k, WSSSE, pure)
-      }
-
-      csvScores(s"$output/cluster-fold$fold.csv", scores)
+      // The score for k clusters
+      (model.k, WSSSE, pure)
     }
+
+    features.unpersist()
+    labels.unpersist()
+
+    sc.makeRDD(csvScores(scores), 1).saveAsTextFile(s"$output/cluster-scores.csv")
+    saveModels(models, output)
+    models
+  }
+
+  // Extracts the centers from the model as csv
+  def csvCentroids(model: KMeansModel) = {
+    val vectors = model.clusterCenters
+    vectors.map(_.toArray.mkString(",")).toSeq
+  }
+
+  // Saves the centers from the models as csv
+  def saveCentroids(models: MutableMap[String, KMeansModel], path: String) {
+    models.map { case (k,v) => 
+      sc.makeRDD(csvCentroids(v), 1).saveAsTextFile(s"$path/centroids-$k")
+    }
+  }
+
+  // Loads the csv centroids
+  def loadCentroids(path: String) = {
+    val vectors = sc.textFile(path).map(_.split(",").map(_.toDouble)).toLocalIterator
+    vectors.map(Vectors.dense(_)).toArray
+  }
+
+  // Saves the KMeansModels as objects so we can load them and use them later
+  def saveModels(models: MutableMap[String, KMeansModel], path: String) {
+    sc.makeRDD(models.toSeq,1).saveAsObjectFile(s"$path/models")
+  }
+
+  // Load the KMeansModels into a map where the key is the value of k used
+  def loadModels(path: String) =
+    MutableMap[String,KMeansModel](sc.objectFile[(String, KMeansModel)](path).toLocalIterator.toSeq :_*)
+
+  def euclidean(a: Array[Double], b: Array[Double]): Double =
+    math.sqrt(a.zip(b).foldLeft(0.0) { (total, next) =>
+      total + math.pow(next._1 - next._2, 2) })
+
+  // Find patients to consider for review
+  def anomalies(input: String, output: String, model: KMeansModel, suspectClusters: Set[Int], take: Int) {
+    object ClosestFirst extends Ordering[(String, Int, Double)] {
+      def compare(x: (String, Int, Double), y: (String, Int, Double)) = x._3 compare y._3
+    }
+    // Get the patient vectors
+    val patients = sc.textFile(input)
+    // Only consider unlabeled patients
+    val vectors = patients.map(parse).filter(_._1 == 0)
+    // Extract patientIds and feature vectors
+    val patientIds = vectors.map(_._3).persist(StorageLevel.MEMORY_ONLY_SER)
+    val features = vectors.map(_._2).persist(StorageLevel.MEMORY_ONLY_SER)
+    // Use the pre-selected model to predict the cluster ids for the unlabeled patients
+    val patientClusters = model.predict(features).persist(StorageLevel.MEMORY_ONLY_SER)
+    // Combine the patient id with the predicted cluster ids
+    val suspicious = patientIds.zip(patientClusters).persist(StorageLevel.MEMORY_ONLY_SER)
+    // Add the distance from the patient to the center of the cluster, retain only clusters which 
+    // have a majority of anomalies and choose the closest first
+    val ranked = suspicious.zip(features).map({ case ((patientId, clusterId), features) => 
+      (patientId, clusterId, euclidean(features.toArray, model.clusterCenters(clusterId).toArray))
+    }).filter(x=>suspectClusters.contains(x._2)).takeOrdered(take)(ClosestFirst)
+    // Output the patient IDs for review
+    sc.makeRDD(ranked.map(_._1), 1).saveAsTextFile(output)
+    patientIds.unpersist()
+    features.unpersist()
+    patientClusters.unpersist()
+    suspicious.unpersist()
   }
 }
 
 import Clusterer._
 val input = "/Users/george/Src/CCP2014-01/data/sample/claim_vector_sample.csv"
-val output = "/Users/george/Src/CCP2014-01/data/sample"
-println("call> cluster(input, output)")
+val output = "/Users/george/Src/CCP2014-01/data/sample/cluster"
+println("call> val models = cluster(input, output)")

@@ -4,10 +4,10 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 AS SELECT *
 FROM (
   SELECT * 
-  FROM patient_claim_vectors TABLESAMPLE(10 percent) unlabelled
-  WHERE label=0 LIMIT 40000
+  FROM patient_claim_vectors TABLESAMPLE(0.1 percent) unlabelled
+  WHERE label=0 LIMIT 100000
 UNION ALL
   SELECT * 
-  FROM patient_claim_vectors TABLESAMPLE(20 percent) labelled
-  WHERE label=1 LIMIT 8000
+  FROM patient_claim_vectors labelled
+  WHERE label=1 LIMIT 50000
 ) sample;

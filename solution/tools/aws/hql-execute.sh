@@ -28,7 +28,6 @@ else
 fi
 hive -d loc=$bucket/procedures -f $hql/create_procedures_ext.hql
 
-
 # Patient Claims
 if hadoop fs -test -e $bucket/patient_claims; then
   echo "$bucket/patient_claims exists."
@@ -39,3 +38,8 @@ else
   hadoop distcp $warehouse/patient_claims $bucket/
 fi
 hive -d loc=$bucket/patient_claims -f $hql/create_patient_claims_ext.hql
+
+# Patient Claim Vectors (if available)
+if hadoop fs -test -e $bucket/patient_claim_vectors; then
+  hive -d loc=$bucket/patient_claim_vectors -f $hql/create_patient_claim_vectors.hql
+fi

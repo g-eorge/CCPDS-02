@@ -1,0 +1,50 @@
+#!/bin/bash
+
+spark=/usr/local/spark
+keyName="emr"
+keyFile=~/.ssh-keys/aws/emr.pem
+slaves=11
+name="CCPDS-Challenge"
+instanceType="m3.xlarge"
+spotPrice="0.06"
+region="eu-west-1"
+sparkVersion="master"
+
+source ~/.ssh-keys/aws/7319-4743-6870.sh
+cd $spark/ec2
+
+case "$1" in
+  launch)
+      ./spark-ec2 -k $keyName -i $keyFile -s $slaves \
+        --instance-type=$instanceType --region=$region --spot-price=$spotPrice --spark-version=$sparkVersion \
+        launch $name 
+      ;;
+
+  resume)
+      ./spark-ec2 --region=$region --resume launch $name
+      ;;
+   
+  login)
+      ./spark-ec2 -k $keyName -i $keyFile --region=$region login $name
+      ;;
+   
+  destroy)
+      ./spark-ec2 --region=$region destroy $name
+      ;;
+
+  stop)
+      ./spark-ec2 --region=$region stop $name
+      ;;
+  
+  start)
+      ./spark-ec2 -i $keyFile --region=$region start $name
+      ;;
+
+  get-master)
+      ./spark-ec2 --region=$region get-master $name
+      ;;
+
+  *)
+      echo $"Usage: $0 {launch|resume|login|destroy|start|stop|get-master}"
+      exit 1
+esac
