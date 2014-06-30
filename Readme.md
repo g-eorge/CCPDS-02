@@ -1,4 +1,4 @@
-# CCP Data Scientist 
+# Cloudera Certified Professional Data Scientist 
 ## Challenge 2 - Anomaly Detection
 
 This is the source code for my submission. In order to run the tools, the data files (not included) need to be placed in the data directory.
