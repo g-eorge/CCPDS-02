@@ -208,37 +208,50 @@ object Clusterer extends Serializable {
     math.sqrt(a.zip(b).foldLeft(0.0) { (total, next) =>
       total + math.pow(next._1 - next._2, 2) })
 
-  // Find patients to consider for review
-  def anomalies(input: String, output: String, model: KMeansModel, suspectClusters: Set[Int], take: Int) {
-    object ClosestFirst extends Ordering[(String, Int, Double)] {
-      def compare(x: (String, Int, Double), y: (String, Int, Double)) = x._3 compare y._3
-    }
+  // Classify patient claim vectors
+  def classify(input: String, model: KMeansModel) = {
     // Get the patient vectors
     val patients = sc.textFile(input)
     // Only consider unlabeled patients
-    val vectors = patients.map(parse).filter(_._1 == 0)
+    val vectors = patients.map(parse).filter(_._1 == 0).cache()
     // Extract patientIds and feature vectors
-    val patientIds = vectors.map(_._3).persist(StorageLevel.MEMORY_ONLY_SER)
-    val features = vectors.map(_._2).persist(StorageLevel.MEMORY_ONLY_SER)
+    val patientIds = vectors.map(_._3)
+    val features = vectors.map(_._2).cache()
     // Use the pre-selected model to predict the cluster ids for the unlabeled patients
-    val patientClusters = model.predict(features).persist(StorageLevel.MEMORY_ONLY_SER)
+    val patientClusters = model.predict(features)
     // Combine the patient id with the predicted cluster ids
-    val suspicious = patientIds.zip(patientClusters).persist(StorageLevel.MEMORY_ONLY_SER)
+    val suspicious = patientIds.zip(patientClusters)
     // Add the distance from the patient to the center of the cluster, retain only clusters which 
     // have a majority of anomalies and choose the closest first
-    val ranked = suspicious.zip(features).map({ case ((patientId, clusterId), features) => 
-      (patientId, clusterId, euclidean(features.toArray, model.clusterCenters(clusterId).toArray))
-    }).filter(x=>suspectClusters.contains(x._2)).takeOrdered(take)(ClosestFirst)
-    // Output the patient IDs for review
-    sc.makeRDD(ranked.map(_._1), 1).saveAsTextFile(output)
-    patientIds.unpersist()
-    features.unpersist()
-    patientClusters.unpersist()
-    suspicious.unpersist()
+    val suspiciousZipFeatures = suspicious.zip(features)
+    val classified = suspiciousZipFeatures.map({ case ((patientId, clusterId), vec) => 
+      (euclidean(vec.toArray, model.clusterCenters(clusterId).toArray), (patientId, clusterId))
+    }).cache()
+    classified
+  }
+
+  // Take the classified vectors and filter out the ones not assigned to the suspect clusters
+  // Sort by distance to the cluster center ascending
+  def anomalies(classified: RDD[(Double, (String, Int))], suspectClusters: Set[Int]) = {
+    val suspectOnly = classified.filter(x => suspectClusters.contains(x._2._2)).cache()
+    val ranked = suspectOnly.sortByKey()
+    ranked
+  }
+
+  // Output the first n patient IDs from the sorted list for review and save as a csv file
+  def csvReview(review: RDD[(Double, (String, Int))], output: String, take: Int) {
+    review.cache()
+    val patientIds = review.map(_._2._1).take(take)
+    sc.makeRDD(patientIds.toSeq, 1).saveAsTextFile(output)
   }
 }
 
 import Clusterer._
-val input = "/Users/george/Src/CCP2014-01/data/sample/claim_vector_sample.csv"
-val output = "/Users/george/Src/CCP2014-01/data/sample/cluster"
-println("call> val models = cluster(input, output)")
+// val input = "/Users/george/Src/CCP2014-01/data/sample/claim_vector_sample.csv"
+// val output = "/Users/george/Src/CCP2014-01/data/sample/cluster"
+println("Example usage:")
+println("call> val models = cluster(sampleInputPath, evaluationOutputPath)")
+println("call> val models = loadModels(evaluationOutputPath)")
+println("call> val classified = classify(fullInputPath, selectedModel)")
+println("call> val anomalies = anomalies(classified, anomalousClusterIds)")
+println("call> csvReview(anomalies, csvPath, takeN)")

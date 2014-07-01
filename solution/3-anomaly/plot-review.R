@@ -7,7 +7,7 @@
 library(grid)
 library(ggplot2)
 
-dataDir <- "../../data/sample/cluster"
+dataDir <- "../../data/cluster-metrics"
 hdfs <- "/part-00000"
 
 # k runs we are interested in

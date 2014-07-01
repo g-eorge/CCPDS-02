@@ -62,6 +62,7 @@ object Vectorizer extends Serializable {
 }
 
 import Vectorizer._
-val input = "/Users/george/Src/CCP2014-01/data/sample/patient_claims_sample.txt"
-val output = "/Users/george/Src/CCP2014-01/data/sample/spark_claim_vector_sample"
-println("call> vectorize(input, output)")
+// val input = "/Users/george/Src/CCP2014-01/data/sample/patient_claims_sample.txt"
+// val output = "/Users/george/Src/CCP2014-01/data/sample/spark_claim_vector_sample"
+println("Example usage:")
+println("call> vectorize(inputPath, outputPath)")

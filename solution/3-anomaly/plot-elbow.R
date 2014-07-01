@@ -2,7 +2,7 @@
 
 library(ggplot2)
 
-dataDir <- "../../data/sample/cluster"
+dataDir <- "../../data/cluster-metrics"
 hdfs <- "/part-00000"
 
 # Read in the within set sums of squared errors for both folds
